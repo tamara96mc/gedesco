@@ -1,23 +1,37 @@
-import logo from './logo.svg';
+import React, { useState, useEffect }  from 'react';
 import './App.css';
+import db from "./db.json"
+import schema from './schema';
+import Table from './Table';
+import axios from 'axios';
 
 function App() {
+  const [ data, setData] = useState({});
+
+  useEffect(() => {
+    const obtenerRecetas = async () => {
+      const url = `https://jsonplaceholder.typicode.com/users`;
+  
+      const resultado = await axios.get(url);
+      
+      console.log(resultado.data);
+     
+      setData(resultado.data);
+  }
+  
+  obtenerRecetas();
+  }, []);
+
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container p-2">
+      <div className="row">
+        <div className="col">
+          <Table headers={Object.keys(schema)} rows={data} />
+        </div>
+      </div>
     </div>
   );
 }
